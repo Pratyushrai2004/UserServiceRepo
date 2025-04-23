@@ -2,26 +2,45 @@ pipeline {
     agent any
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Build') {
             steps {
-                echo 'Building...'
-                // Add your build steps here, for example:
-                sh 'javac UserService.java'
+                script {
+                    if (isUnix()) {
+                        sh 'javac UserService.java'
+                    } else {
+                        bat 'javac UserService.java'  // Use `bat` for Windows
+                    }
+                }
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running tests...'
-                // Add your test steps here, for example:
-                sh 'java UserService.java'
+                script {
+                    if (isUnix()) {
+                        sh 'java UserService.java'
+                    } else {
+                        bat 'java UserService.java'  // Use `bat` for Windows
+                    }
+                }
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploying to production...'
-                // Add deployment steps here
+                script {
+                    if (isUnix()) {
+                        sh 'deploy.sh'
+                    } else {
+                        bat 'deploy.bat'  // Windows-specific deploy command
+                    }
+                }
             }
         }
     }
