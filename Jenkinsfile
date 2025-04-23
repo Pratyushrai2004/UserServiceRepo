@@ -11,11 +11,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    if (isUnix()) {
-                        sh 'javac UserService.java'
-                    } else {
-                        bat 'javac UserService.java'  // Use `bat` for Windows
-                    }
+                    // Compiling the UserService.java file
+                    bat 'javac UserService.java'
                 }
             }
         }
@@ -23,11 +20,8 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    if (isUnix()) {
-                        sh 'java UserService.java'
-                    } else {
-                        bat 'java UserService.java'  // Use `bat` for Windows
-                    }
+                    // Running the compiled UserService.class
+                    bat 'java UserService'
                 }
             }
         }
@@ -35,11 +29,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    if (isUnix()) {
-                        sh 'deploy.sh'
-                    } else {
-                        bat 'deploy.bat'  // Windows-specific deploy command
-                    }
+                    echo 'Deploying to production...'
+                    // Add your deployment steps here
                 }
             }
         }
